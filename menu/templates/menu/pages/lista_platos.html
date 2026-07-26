@@ -1,0 +1,27 @@
+{% extends 'menu/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Menú del Restaurante</h2>
+    <a href="{% url 'crear_plato' %}" class="btn btn-success">+ Agregar Plato</a>
+</div>
+<table class="table table-striped table-hover bg-white shadow-sm rounded">
+    <thead class="table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for plato in platos %}
+            {% include 'menu/components/_fila_plato.html' with plato=plato %}
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center text-muted">No hay platos registrados en el menú.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,6 @@
+{# Componente: badge de estado. Recibe `disponible` (booleano). #}
+{% if disponible %}
+    <span class="badge bg-success">Disponible</span>
+{% else %}
+    <span class="badge bg-secondary">Agotado</span>
+{% endif %}

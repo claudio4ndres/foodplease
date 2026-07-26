@@ -1,0 +1,11 @@
+{# Componente: fila de la tabla de platos. Recibe `plato` en el contexto. #}
+<tr>
+    <td><strong>{{ plato.nombre }}</strong></td>
+    <td>{{ plato.descripcion }}</td>
+    <td>${{ plato.precio }}</td>
+    <td>{% include 'menu/components/_badge_disponibilidad.html' with disponible=plato.disponible %}</td>
+    <td>
+        <a href="{% url 'editar_plato' plato.id %}" class="btn btn-sm btn-warning">Editar</a>
+        <a href="{% url 'eliminar_plato' plato.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+    </td>
+</tr>
