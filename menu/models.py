@@ -1,8 +1,7 @@
 from django.db import models
 
-# este modelo crea la tabla de platos en la base de datos
-from django.db import models
 
+# este modelo crea la tabla de platos en la base de datos
 class Plato(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(verbose_name="Descripción")
