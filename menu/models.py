@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 # este modelo crea la tabla de platos en la base de datos
 from django.db import models
 

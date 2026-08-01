@@ -10,12 +10,7 @@ from menu.models import Plato as PlatoModel
 
 # este repositorio guarda los platos en un diccionario, lo usamos para las pruebas
 class RepositorioEnMemoria(PlatoRepository):
-    """Adaptador falso para probar los casos de uso sin base de datos.
-
-    Esto es posible gracias a la arquitectura hexagonal: los casos de uso
-    solo conocen el puerto, no el ORM.
-    """
-
+    
     def __init__(self):
         self._platos = {}
         self._siguiente_id = 1

@@ -1,5 +1,3 @@
-"""Acá se define qué se le puede pedir a un repositorio de platos.
-"""
 from abc import ABC, abstractmethod
 from typing import List, Optional
 

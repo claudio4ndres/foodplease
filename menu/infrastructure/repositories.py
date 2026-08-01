@@ -1,8 +1,3 @@
-"""Adaptador de salida: implementa el puerto PlatoRepository con el ORM de Django.
-
-Es el único lugar donde el ORM y la entidad de dominio se tocan; si mañana
-cambia la base de datos, solo cambia este archivo.
-"""
 from typing import List, Optional
 
 from menu.domain.entities import Plato
