@@ -1,5 +1,10 @@
 # FoodPlease 🍽️
 
+> **Universidad Andrés Bello — UNAB Online**
+> Curso **APTC106** · Semana 6 · Sumativa 2: Propuesta de Aplicación
+> Profesor: **Gonzalo Eduardo Pérez Correa**
+> **Grupo 2** — Integrantes: Deizy Rozas Almeida · Kenny Tapia Farfán · Nicolás Sanhueza Díaz · Claudio Figueroa Arias
+
 Aplicación web para administrar el menú de un restaurante o foodservice: permite **listar, agregar, editar y eliminar platos** (un CRUD) desde un panel simple en el navegador.
 
 Está construida con **Django** (Python) y organizada con **arquitectura hexagonal**, una forma de ordenar el código que separa "lo que hace el negocio" de "la tecnología que lo rodea". Este README explica cómo ejecutarla y, sobre todo, **por qué está construida así**.
