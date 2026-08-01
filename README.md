@@ -1,4 +1,4 @@
-# FoodPlease 🍽️
+# FoodPlease
 
 > **Universidad Andrés Bello — UNAB Online**
 > Curso **APTC106** · Semana 6 · Sumativa 2: Propuesta de Aplicación
@@ -36,7 +36,7 @@ Luego abre **http://127.0.0.1:8000** en tu navegador. Para correr las pruebas:
 python manage.py test
 ```
 
-> 💡 **¿Y la base de datos?** No hay que instalar nada: usamos SQLite, que viene incluida en Python. La base de datos es literalmente el archivo `db.sqlite3` que se crea al ejecutar las migraciones.
+> **¿Y la base de datos?** No hay que instalar nada: usamos SQLite, que viene incluida en Python. La base de datos es literalmente el archivo `db.sqlite3` que se crea al ejecutar las migraciones.
 
 ---
 
@@ -46,11 +46,11 @@ Cuando se habla de "arquitectura" se mezclan cosas que en realidad son **decisio
 
 ```mermaid
 flowchart TB
-    subgraph sistema ["🏠 Nivel SISTEMA — ¿cuántas unidades desplegables?"]
+    subgraph sistema ["Nivel SISTEMA — ¿cuántas unidades desplegables?"]
         direction TB
-        subgraph aplicacion ["📦 Nivel APLICACIÓN — ¿cómo se organiza el código por dentro?"]
+        subgraph aplicacion ["Nivel APLICACIÓN — ¿cómo se organiza el código por dentro?"]
             direction TB
-            subgraph clases ["🧩 Nivel CLASES — ¿qué patrones resuelven problemas puntuales?"]
+            subgraph clases ["Nivel CLASES — ¿qué patrones resuelven problemas puntuales?"]
                 patrones["Repository · Inyección de dependencias"]
             end
         end
@@ -81,7 +81,7 @@ Partir el proyecto en servicios ahora significaría pagar costos reales (comunic
 ```mermaid
 flowchart LR
     A["Monolito acoplado<br/><small>rama main — el punto de partida</small>"]
-    B["Monolito modular<br/><small>rama feature-arquitectura — estamos aquí ✅</small>"]
+    B["Monolito modular<br/><small>rama feature-arquitectura — estamos aquí</small>"]
     C["Microservicios<br/><small>solo si el negocio escala</small>"]
     A --> B --> C
 
@@ -116,11 +116,11 @@ La arquitectura hexagonal hace exactamente eso con el código: el negocio al cen
 
 ```mermaid
 flowchart LR
-    nav["🌐 Navegador"]
+    nav["Navegador"]
     subgraph entrada ["Adaptador de ENTRADA"]
         vistas["Vistas Django<br/><small>traducen HTTP</small>"]
     end
-    subgraph nucleo ["⬡ NÚCLEO — no sabe que Django existe"]
+    subgraph nucleo ["NÚCLEO — no sabe que Django existe"]
         casos["Casos de uso<br/><small>crear, listar, editar, eliminar</small>"]
         dominio["Dominio<br/><small>entidad Plato + reglas + puerto</small>"]
         casos --> dominio
@@ -128,7 +128,7 @@ flowchart LR
     subgraph salida ["Adaptador de SALIDA"]
         repo["Repositorio ORM<br/><small>implementa el puerto</small>"]
     end
-    bd[("🗄️ SQLite")]
+    bd[("SQLite")]
 
     nav --> vistas --> casos
     dominio -.->|"puerto (interfaz)"| repo --> bd
@@ -144,16 +144,12 @@ flowchart LR
     style bd fill:#f5f5f5,stroke:#888888,color:#2c2c2a
 ```
 
-### La regla de oro
-
-**Las dependencias apuntan hacia adentro.** El núcleo no conoce a Django; Django conoce al núcleo. Por eso el núcleo puede probarse solo, cambiarse de base de datos o conectarse a una app móvil sin tocar la lógica.
-
 ### ¿Qué ganamos? (y qué costó)
 
-✅ **Se puede probar el negocio sin base de datos**: las pruebas usan un "repositorio de juguete" en memoria.
-✅ **Canales intercambiables**: una API para app móvil sería solo un segundo adaptador de entrada — la lógica no se duplica.
-✅ **Base de datos intercambiable**: pasar de SQLite a PostgreSQL toca un solo archivo.
-⚠️ **El costo**: más carpetas y más archivos para un CRUD chico. Lo aceptamos porque los beneficios se notan desde ya (en las pruebas) y no solo en el futuro.
+- **Se puede probar el negocio sin base de datos**: las pruebas usan un "repositorio de juguete" en memoria.
+- **Canales intercambiables**: una API para app móvil sería solo un segundo adaptador de entrada — la lógica no se duplica.
+- **Base de datos intercambiable**: pasar de SQLite a PostgreSQL toca un solo archivo.
+- **El costo**: más carpetas y más archivos para un CRUD chico. Lo aceptamos porque los beneficios se notan desde ya (en las pruebas) y no solo en el futuro.
 
 ---
 
@@ -165,18 +161,18 @@ foodplease-crud/
 ├── foodplease_project/        ← configuración general (settings, rutas raíz)
 └── menu/                      ← la app: el módulo "menú" del negocio
     │
-    ├── domain/                ← ⬡ EL NÚCLEO (cero Django aquí)
+    ├── domain/                ← EL NÚCLEO (cero Django aquí)
     │   ├── entities.py        ←   el Plato y sus reglas (precio > 0, nombre no vacío)
     │   ├── exceptions.py      ←   errores del negocio
     │   └── ports.py           ←   el "contrato" que la persistencia debe cumplir
     │
-    ├── application/           ← ⬡ LOS CASOS DE USO (las "recetas")
+    ├── application/           ← LOS CASOS DE USO (las "recetas")
     │   └── use_cases.py       ←   ListarPlatos, CrearPlato, EditarPlato, EliminarPlato
     │
-    ├── infrastructure/        ← 🔌 ADAPTADOR DE SALIDA
+    ├── infrastructure/        ← ADAPTADOR DE SALIDA
     │   └── repositories.py    ←   cumple el contrato usando la base de datos
     │
-    ├── presentation/          ← 🔌 ADAPTADOR DE ENTRADA
+    ├── presentation/          ← ADAPTADOR DE ENTRADA
     │   ├── views.py           ←   traduce clics y formularios a casos de uso
     │   └── forms.py           ←   valida lo que escribe el usuario
     │
@@ -194,17 +190,17 @@ Cuando el usuario guarda un plato nuevo, la información recorre este camino:
 
 ```mermaid
 sequenceDiagram
-    participant U as 🌐 Usuario
+    participant U as Usuario
     participant V as Vista (entrada)
     participant C as Caso de uso
     participant D as Dominio
     participant R as Repositorio (salida)
-    participant B as 🗄️ SQLite
+    participant B as SQLite
 
     U->>V: envía el formulario
     V->>C: datos validados
     C->>D: crea el Plato (aplica reglas)
-    D-->>C: plato válido ✅
+    D-->>C: plato válido
     C->>R: guárdalo
     R->>B: INSERT
     B-->>U: redirige al listado
@@ -229,7 +225,7 @@ Así el HTML no se repite, y si el día de mañana el frontend se convierte en u
 
 El proyecto tiene **11 pruebas automatizadas** (`python manage.py test`) en dos niveles:
 
-1. **Pruebas del negocio en aislamiento** — usan un repositorio en memoria (sin base de datos, sin servidor web). Verifican que se crea, edita y elimina correctamente y que las reglas se cumplen. 👉 *Esto era imposible en la versión original*, porque la lógica estaba pegada a la vista y a la base de datos.
+1. **Pruebas del negocio en aislamiento** — usan un repositorio en memoria (sin base de datos, sin servidor web). Verifican que se crea, edita y elimina correctamente y que las reglas se cumplen. *Esto era imposible en la versión original*, porque la lógica estaba pegada a la vista y a la base de datos.
 2. **Pruebas del flujo completo** — simulan al usuario real: envían formularios y verifican redirecciones, errores visibles y el 404 cuando el plato no existe.
 
 ---
@@ -244,17 +240,3 @@ La arquitectura deja el camino pavimentado. Cada necesidad nueva tiene un lugar 
 | Una base de datos "de verdad" (PostgreSQL) | El adaptador de salida y la configuración |
 | Nuevos módulos (pedidos, usuarios) | Nuevas apps con sus propias capas, mismo patrón |
 | Escalar en serio (equipos, tráfico) | Se extraen módulos como microservicios: los límites ya existen |
-
----
-
-## Glosario rápido
-
-| Término | En simple |
-|---|---|
-| **CRUD** | Create, Read, Update, Delete: las 4 operaciones básicas sobre datos |
-| **Monolito** | Todo el sistema se despliega como una sola aplicación |
-| **Arquitectura hexagonal** | El negocio al centro, la tecnología en los bordes, contratos entre ambos |
-| **Puerto** | El contrato (interfaz) que el núcleo le exige a la tecnología |
-| **Adaptador** | La pieza que cumple ese contrato con una tecnología concreta |
-| **Repository** | Patrón que esconde la base de datos detrás de una interfaz simple |
-| **Inyección de dependencias** | Entregarle a una pieza sus herramientas desde afuera, para poder cambiarlas |
