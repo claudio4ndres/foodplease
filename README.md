@@ -80,8 +80,8 @@ Partir el proyecto en servicios ahora significaría pagar costos reales (comunic
 
 ```mermaid
 flowchart LR
-    A["Monolito acoplado<br/><small>rama main — el punto de partida</small>"]
-    B["Monolito modular<br/><small>rama feature-arquitectura — estamos aquí</small>"]
+    A["Monolito acoplado<br/><small>versión inicial — el punto de partida</small>"]
+    B["Monolito modular<br/><small>versión actual del proyecto</small>"]
     C["Microservicios<br/><small>solo si el negocio escala</small>"]
     A --> B --> C
 
@@ -98,7 +98,7 @@ Lo importante: el paso del medio **deja los límites dibujados**. Si mañana hay
 
 ### El problema que había
 
-En la versión original (rama `main`), cada vista de Django hacía **todo a la vez**: recibía la petición web, aplicaba la lógica del negocio y consultaba la base de datos. Eso se llama *acoplamiento*, y sus síntomas son concretos:
+En la primera versión del proyecto, cada vista de Django hacía **todo a la vez**: recibía la petición web, aplicaba la lógica del negocio y consultaba la base de datos. Eso se llama *acoplamiento*, y sus síntomas son concretos:
 
 - No se podía probar la lógica sin levantar la base de datos.
 - No se podía reutilizar la lógica desde otro canal (por ejemplo, una app móvil).

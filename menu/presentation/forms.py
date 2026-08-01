@@ -1,8 +1,3 @@
-"""Formulario de presentación: valida la entrada HTTP.
-
-Es un forms.Form  para que la capa de presentación
-no dependa del ORM: solo produce datos limpios para los casos de uso.
-"""
 from django import forms
 
 

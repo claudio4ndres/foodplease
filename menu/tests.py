@@ -33,7 +33,7 @@ class RepositorioEnMemoria(PlatoRepository):
 
 
 class CasosDeUsoTest(TestCase):
-    """Prueba la lógica de negocio de forma aislada, sin Django ORM ni HTTP."""
+
 
     def setUp(self):
         self.repo = RepositorioEnMemoria()
@@ -65,7 +65,7 @@ class CasosDeUsoTest(TestCase):
 
 
 class VistasCrudTest(TestCase):
-    """Prueba el flujo completo: HTTP -> vista -> caso de uso -> ORM -> SQLite."""
+
 
     def test_lista_vacia(self):
         respuesta = self.client.get(reverse('lista_platos'))

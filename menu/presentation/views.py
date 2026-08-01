@@ -1,9 +1,3 @@
-"""Adaptador de entrada HTTP: traduce peticiones web a casos de uso.
-
-Las vistas no contienen lógica de negocio ni consultas al ORM:
-validan la entrada con el formulario, invocan el caso de uso
-y traducen los errores de dominio a respuestas HTTP.
-"""
 from django.http import Http404
 from django.shortcuts import redirect, render
 

@@ -1,7 +1,3 @@
-"""Casos de uso: orquestan el dominio a través del puerto PlatoRepository.
-
-Reciben el repositorio por inyección de dependencias.
-"""
 from typing import List
 
 from menu.domain.entities import Plato
