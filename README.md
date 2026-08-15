@@ -210,6 +210,18 @@ Si una regla del negocio se rompe (por ejemplo, precio $0), el **dominio** recha
 
 ---
 
+## Mockups de la aplicación móvil
+
+En la carpeta [`mockups/`](mockups/) están los diseños de la futura app móvil (pensada para desarrollarse en Flutter): las cuatro vistas principales con sus primeras interacciones de navegación, sin lógica todavía. Cada pantalla existe como HTML/CSS (el código fuente del diseño) y como imagen renderizada.
+
+| Menú | Detalle | Formulario | Eliminar |
+|---|---|---|---|
+| <img src="mockups/s1_menu.png" width="180"> | <img src="mockups/s2_detalle.png" width="180"> | <img src="mockups/s3_form.png" width="180"> | <img src="mockups/s4_eliminar.png" width="180"> |
+
+La app móvil consumirá una API REST que se agregará como segundo adaptador de entrada — misma lógica de negocio, cero duplicación (ver "¿Y el futuro?" más abajo).
+
+---
+
 ## El frontend también tiene arquitectura
 
 Las plantillas HTML siguen la misma idea de separación, inspirada en *Atomic Design*:

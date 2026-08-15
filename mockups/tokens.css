@@ -1,0 +1,70 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+:root {
+  --bg: #FAF6F0;
+  --surface: #FFFFFF;
+  --ink: #211D18;
+  --ink-2: #5C554B;
+  --muted: #9A9184;
+  --line: #EEE7DC;
+  --brand: #C13529;
+  --brand-deep: #9E2B21;
+  --brand-soft: #FBEDEA;
+  --ok: #1D8A5F;
+  --ok-soft: #E4F4EC;
+  --off: #8A8378;
+  --off-soft: #F0EDE7;
+  --shadow: 0 10px 30px rgba(33, 29, 24, .10);
+  --shadow-lg: 0 18px 50px rgba(33, 29, 24, .18);
+}
+html, body { width: 390px; height: 844px; overflow: hidden; }
+body {
+  font-family: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.statusbar {
+  height: 54px; flex: none;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 28px 0;
+  font-size: 15px; font-weight: 600;
+}
+.statusbar svg { display: block; }
+.content { flex: 1; padding: 0 24px; overflow: hidden; }
+.eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  color: var(--brand); text-transform: uppercase;
+}
+h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; }
+.sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700;
+  padding: 6px 12px; border-radius: 999px;
+}
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.off { background: var(--off-soft); color: var(--off); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  height: 56px; border-radius: 18px;
+  font-size: 16px; font-weight: 700; letter-spacing: -.01em;
+}
+.btn.primary { background: var(--brand); color: #fff; box-shadow: 0 10px 24px rgba(193, 53, 41, .35); }
+.btn.ghost { background: transparent; color: var(--ink-2); }
+.btn.outline-danger { background: var(--brand-soft); color: var(--brand); }
+.tabbar {
+  flex: none; height: 92px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  display: flex; align-items: flex-start; padding-top: 12px;
+}
+.tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; color: var(--muted);
+}
+.tab.active { color: var(--brand); font-weight: 700; }
+.tab .tabdot { width: 4px; height: 4px; border-radius: 50%; background: var(--brand); opacity: 0; }
+.tab.active .tabdot { opacity: 1; }
