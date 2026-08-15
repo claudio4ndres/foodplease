@@ -1,0 +1,51 @@
+# FoodPlease en contenedores: app Django + PostgreSQL + LocalStack (AWS local)
+# Uso: docker compose up --build
+services:
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DEBUG: "False"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+      POSTGRES_HOST: db
+      POSTGRES_DB: foodplease
+      POSTGRES_USER: foodplease
+      POSTGRES_PASSWORD: foodplease
+      AWS_ENDPOINT_URL: http://localstack:4566
+    command: sh -c "python manage.py migrate && gunicorn foodplease_project.wsgi:application --bind 0.0.0.0:8000 --workers 2"
+    depends_on:
+      db:
+        condition: service_healthy
+      localstack:
+        condition: service_started
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: foodplease
+      POSTGRES_USER: foodplease
+      POSTGRES_PASSWORD: foodplease
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U foodplease"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  # Emulador local de AWS (gratis): mismo API que la nube real.
+  # En produccion, este servicio desaparece y AWS_ENDPOINT_URL apunta a AWS.
+  localstack:
+    # Version 4 = edicion Community (gratuita, sin token de licencia)
+    image: localstack/localstack:4
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: s3
+    volumes:
+      - ./localstack-init:/etc/localstack/init/ready.d
+
+volumes:
+  pgdata:
