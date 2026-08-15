@@ -255,7 +255,22 @@ La arquitectura deja el camino pavimentado. Cada necesidad nueva tiene un lugar 
 
 ---
 
-## La arquitectura en la nube
+## Entregas del curso
+
+### Sumativa 2 — Semana 6: Propuesta de Aplicación
+
+Primera entrega del proyecto: el CRUD web funcional con despliegue local, refactorizado desde la versión inicial acoplada hacia el monolito modular con arquitectura hexagonal que documenta este README, con sus 11 pruebas automatizadas y las decisiones de diseño argumentadas. Informe: `aptc106_s6grupo2.docx`.
+
+### Sumativa 3 — Semana 9: Propuesta y Visualización al Repositorio
+
+Segunda entrega (este repositorio es parte de ella):
+
+- **Repositorio público en GitHub** con el historial completo del proyecto.
+- **Mockups de la aplicación móvil** (carpeta [`mockups/`](mockups/)) con sus interacciones de navegación.
+- **Propuesta de integración móvil/web**: app Flutter que consumirá una API REST (Django REST Framework) agregada como segundo adaptador de entrada al núcleo hexagonal.
+- **Despliegue real en la nube** y **pipeline CI/CD**, detallados a continuación.
+
+#### La arquitectura en la nube
 
 La aplicación está desplegada en AWS y accesible en **https://dkru8u5k5ghu5.cloudfront.net**. Así fluye una visita:
 
@@ -282,10 +297,10 @@ Decisiones de seguridad del despliegue:
 - **CloudFront al frente**: aporta el certificado HTTPS (candado en el navegador) y absorbe ataques antes de que lleguen al servidor.
 - **La base de datos no es accesible desde internet**: vive solo en la red interna de Docker.
 - **SSH restringido**: únicamente direcciones autorizadas pueden administrar el servidor.
-- **Configuración por variables de entorno**: los secretos (claves, contraseñas) se generan en el servidor y nunca se suben al repositorio.
+- **Configuración por variables de entorno**: los secretos (claves, contraseñas) se generan en el servidor y nunca se suben al repositorio (aprovisionamiento en [`deploy/ec2-user-data.sh`](deploy/ec2-user-data.sh)).
 - Para desarrollar sin gastar, el `docker-compose.yml` local incluye **LocalStack**: un AWS emulado que corre en tu máquina.
 
-## Integración y despliegue continuo (CI/CD)
+#### Integración y despliegue continuo (CI/CD)
 
 Cada `git push` a `main` publica automáticamente — pero solo si las pruebas pasan:
 
@@ -307,22 +322,5 @@ Dos detalles de diseño que vale la pena conocer:
 
 - **GitHub no guarda ninguna credencial de AWS**: se autentica con identidad federada (OIDC) y la confianza está anclada al ID inmutable de este repositorio, rama `main` únicamente. El workflow está en [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) y la configuración de AWS en [`deploy/setup-cicd.sh`](deploy/setup-cicd.sh).
 - **El despliegue viaja por AWS SSM**, no por SSH: la orden llega a la instancia a través de la propia AWS, sin abrir puertos adicionales.
-
----
-
-## Entregas del curso
-
-### Sumativa 2 — Semana 6: Propuesta de Aplicación
-
-Primera entrega del proyecto: el CRUD web funcional con despliegue local, refactorizado desde la versión inicial acoplada hacia el monolito modular con arquitectura hexagonal que documenta este README, con sus 11 pruebas automatizadas y las decisiones de diseño argumentadas. Informe: `aptc106_s6grupo2.docx`.
-
-### Sumativa 3 — Semana 9: Propuesta y Visualización al Repositorio
-
-Segunda entrega (este repositorio es parte de ella):
-
-- **Repositorio público en GitHub** con el historial completo del proyecto.
-- **Mockups de la aplicación móvil** (carpeta [`mockups/`](mockups/)) con sus interacciones de navegación.
-- **Propuesta de integración móvil/web**: app Flutter que consumirá una API REST (Django REST Framework) agregada como segundo adaptador de entrada al núcleo hexagonal.
-- **Despliegue real en la nube**: la aplicación corre en AWS y es accesible públicamente en **https://dkru8u5k5ghu5.cloudfront.net** — CloudFront (HTTPS) al frente de una instancia EC2 con los contenedores de la app (Django + gunicorn) y PostgreSQL, aprovisionados por [`deploy/ec2-user-data.sh`](deploy/ec2-user-data.sh). Para desarrollo local sin costo se usa LocalStack como AWS emulado (`docker compose up`).
 
 Informe: `aptc106_s9grupo2.docx`.
