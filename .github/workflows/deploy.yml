@@ -1,0 +1,59 @@
+# Pipeline CI/CD: en cada push a main corre las pruebas y,
+# solo si pasan, despliega a la instancia EC2 via AWS SSM (sin puertos abiertos).
+# La autenticacion con AWS es por OIDC: GitHub no guarda credenciales.
+name: CI-CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  pruebas:
+    name: Pruebas automatizadas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Ejecutar las pruebas
+        run: python manage.py test
+
+  desplegar:
+    name: Desplegar en AWS (EC2 via SSM)
+    needs: pruebas
+    runs-on: ubuntu-latest
+    steps:
+      - name: Autenticarse en AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::912644496587:role/foodplease-github-deploy
+          aws-region: us-east-2
+
+      - name: Ordenar el despliegue a la instancia
+        run: |
+          CMD_ID=$(aws ssm send-command \
+            --instance-ids i-0f30255f21806b764 \
+            --document-name "AWS-RunShellScript" \
+            --comment "Despliegue automatico desde GitHub Actions" \
+            --parameters 'commands=["cd /opt/foodplease && git pull && docker compose -f docker-compose.prod.yml up -d --build"]' \
+            --query "Command.CommandId" --output text)
+          echo "Comando SSM: $CMD_ID"
+          aws ssm wait command-executed --command-id "$CMD_ID" --instance-id i-0f30255f21806b764 || true
+          aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id i-0f30255f21806b764 \
+            --query "{Estado:Status,Salida:StandardOutputContent,Errores:StandardErrorContent}" --output json
+          ESTADO=$(aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id i-0f30255f21806b764 --query Status --output text)
+          test "$ESTADO" = "Success"
+
+      - name: Verificar la URL publica
+        run: |
+          CODIGO=$(curl -s -o /dev/null -w "%{http_code}" https://dkru8u5k5ghu5.cloudfront.net/)
+          echo "HTTP $CODIGO"
+          test "$CODIGO" = "200"
