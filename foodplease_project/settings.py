@@ -19,6 +19,10 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [h for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h]
 
+# Dominios confiables para formularios cuando la app corre detras de un proxy
+# con HTTPS (por ejemplo CloudFront). Formato: https://dominio,https://otro
+CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o]
+
 
 # Application definition
 
