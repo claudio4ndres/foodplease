@@ -1,0 +1,39 @@
+# Despliegue en la nube (EC2): app + base de datos, configurados via .env
+# Uso: docker compose -f docker-compose.prod.yml up -d --build
+services:
+
+  web:
+    build: .
+    ports:
+      - "80:8000"
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?definir en .env}
+      DJANGO_DEBUG: "False"
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:?definir en .env}
+      POSTGRES_HOST: db
+      POSTGRES_DB: foodplease
+      POSTGRES_USER: foodplease
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?definir en .env}
+    command: sh -c "python manage.py migrate && gunicorn foodplease_project.wsgi:application --bind 0.0.0.0:8000 --workers 2"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: foodplease
+      POSTGRES_USER: foodplease
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?definir en .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U foodplease"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:
