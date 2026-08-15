@@ -10,6 +10,7 @@ services:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?definir en .env}
       DJANGO_DEBUG: "False"
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:?definir en .env}
+      DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-}
       POSTGRES_HOST: db
       POSTGRES_DB: foodplease
       POSTGRES_USER: foodplease
