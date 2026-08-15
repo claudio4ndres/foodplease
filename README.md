@@ -320,9 +320,4 @@ flowchart LR
     style v fill:#eaf3de,stroke:#639922,color:#173404
 ```
 
-Dos detalles de diseño que vale la pena conocer:
-
-- **GitHub no guarda ninguna credencial de AWS**: se autentica con identidad federada (OIDC) y la confianza está anclada al ID inmutable de este repositorio, rama `main` únicamente. El workflow está en [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) y la configuración de AWS en [`deploy/setup-cicd.sh`](deploy/setup-cicd.sh).
-- **El despliegue viaja por AWS SSM**, no por SSH: la orden llega a la instancia a través de la propia AWS, sin abrir puertos adicionales.
-
 Informe: `aptc106_s9grupo2.docx`.
