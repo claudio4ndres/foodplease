@@ -255,6 +255,61 @@ La arquitectura deja el camino pavimentado. Cada necesidad nueva tiene un lugar 
 
 ---
 
+## La arquitectura en la nube
+
+La aplicación está desplegada en AWS y accesible en **https://dkru8u5k5ghu5.cloudfront.net**. Así fluye una visita:
+
+```mermaid
+flowchart LR
+    u["Usuario"] -->|"HTTPS"| cf["CloudFront<br/><small>certificado + escudo anti ataques</small>"]
+    cf -->|"HTTP solo hacia el origen"| web["Contenedor web<br/><small>Django + gunicorn</small>"]
+    web --> db[("Contenedor<br/>PostgreSQL")]
+
+    subgraph ec2 ["Instancia EC2 (Docker Compose)"]
+        web
+        db
+    end
+
+    style u fill:#f5f5f5,stroke:#888888,color:#2c2c2a
+    style cf fill:#e1f5ee,stroke:#1d9e75,color:#04342c
+    style web fill:#ede9fe,stroke:#7c6fd0,color:#26215c
+    style db fill:#ede9fe,stroke:#7c6fd0,color:#26215c
+    style ec2 fill:#fdf6ec,stroke:#ba7517,color:#412402
+```
+
+Decisiones de seguridad del despliegue:
+
+- **CloudFront al frente**: aporta el certificado HTTPS (candado en el navegador) y absorbe ataques antes de que lleguen al servidor.
+- **La base de datos no es accesible desde internet**: vive solo en la red interna de Docker.
+- **SSH restringido**: únicamente direcciones autorizadas pueden administrar el servidor.
+- **Configuración por variables de entorno**: los secretos (claves, contraseñas) se generan en el servidor y nunca se suben al repositorio.
+- Para desarrollar sin gastar, el `docker-compose.yml` local incluye **LocalStack**: un AWS emulado que corre en tu máquina.
+
+## Integración y despliegue continuo (CI/CD)
+
+Cada `git push` a `main` publica automáticamente — pero solo si las pruebas pasan:
+
+```mermaid
+flowchart LR
+    dev["Desarrollador<br/><small>git push a main</small>"] --> t["GitHub Actions<br/><small>corre las 11 pruebas</small>"]
+    t -->|"solo si pasan"| d["Orden de despliegue<br/><small>AWS SSM, sin puertos abiertos</small>"]
+    d --> s["La instancia se actualiza<br/><small>git pull + docker compose</small>"]
+    s --> v["Verificación<br/><small>la URL responde 200</small>"]
+
+    style dev fill:#f5f5f5,stroke:#888888,color:#2c2c2a
+    style t fill:#ede9fe,stroke:#7c6fd0,color:#26215c
+    style d fill:#e1f5ee,stroke:#1d9e75,color:#04342c
+    style s fill:#e1f5ee,stroke:#1d9e75,color:#04342c
+    style v fill:#eaf3de,stroke:#639922,color:#173404
+```
+
+Dos detalles de diseño que vale la pena conocer:
+
+- **GitHub no guarda ninguna credencial de AWS**: se autentica con identidad federada (OIDC) y la confianza está anclada al ID inmutable de este repositorio, rama `main` únicamente. El workflow está en [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) y la configuración de AWS en [`deploy/setup-cicd.sh`](deploy/setup-cicd.sh).
+- **El despliegue viaja por AWS SSM**, no por SSH: la orden llega a la instancia a través de la propia AWS, sin abrir puertos adicionales.
+
+---
+
 ## Entregas del curso
 
 ### Sumativa 2 — Semana 6: Propuesta de Aplicación
