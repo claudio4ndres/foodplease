@@ -43,7 +43,7 @@ jobs:
             --instance-ids i-0f30255f21806b764 \
             --document-name "AWS-RunShellScript" \
             --comment "Despliegue automatico desde GitHub Actions" \
-            --parameters 'commands=["cd /opt/foodplease && git pull && docker compose -f docker-compose.prod.yml up -d --build"]' \
+            --parameters 'commands=["cd /opt/foodplease && git fetch origin main && git checkout main && git reset --hard origin/main && docker compose -f docker-compose.prod.yml up -d --build"]' \
             --query "Command.CommandId" --output text)
           echo "Comando SSM: $CMD_ID"
           aws ssm wait command-executed --command-id "$CMD_ID" --instance-id i-0f30255f21806b764 || true
