@@ -70,7 +70,7 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px;
 .tab.active .tabdot { opacity: 1; }
 
 /* navegacion del prototipo: enlaces sin decoracion */
-a.nav { text-decoration: none; color: inherit; display: block; }
+a.nav { text-decoration: none; color: inherit; }
 
 /* En pantallas grandes (escritorio): centrar como un telefono con marco */
 @media (min-width: 500px) {
