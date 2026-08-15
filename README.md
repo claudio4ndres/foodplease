@@ -252,3 +252,22 @@ La arquitectura deja el camino pavimentado. Cada necesidad nueva tiene un lugar 
 | Una base de datos "de verdad" (PostgreSQL) | El adaptador de salida y la configuración |
 | Nuevos módulos (pedidos, usuarios) | Nuevas apps con sus propias capas, mismo patrón |
 | Escalar en serio (equipos, tráfico) | Se extraen módulos como microservicios: los límites ya existen |
+
+---
+
+## Entregas del curso
+
+### Sumativa 2 — Semana 6: Propuesta de Aplicación
+
+Primera entrega del proyecto: el CRUD web funcional con despliegue local, refactorizado desde la versión inicial acoplada hacia el monolito modular con arquitectura hexagonal que documenta este README, con sus 11 pruebas automatizadas y las decisiones de diseño argumentadas. Informe: `aptc106_s6grupo2.docx`.
+
+### Sumativa 3 — Semana 9: Propuesta y Visualización al Repositorio
+
+Segunda entrega (este repositorio es parte de ella):
+
+- **Repositorio público en GitHub** con el historial completo del proyecto.
+- **Mockups de la aplicación móvil** (carpeta [`mockups/`](mockups/)) con sus interacciones de navegación.
+- **Propuesta de integración móvil/web**: app Flutter que consumirá una API REST (Django REST Framework) agregada como segundo adaptador de entrada al núcleo hexagonal.
+- **Despliegue real en la nube**: la aplicación corre en AWS y es accesible públicamente en **https://dkru8u5k5ghu5.cloudfront.net** — CloudFront (HTTPS) al frente de una instancia EC2 con los contenedores de la app (Django + gunicorn) y PostgreSQL, aprovisionados por [`deploy/ec2-user-data.sh`](deploy/ec2-user-data.sh). Para desarrollo local sin costo se usa LocalStack como AWS emulado (`docker compose up`).
+
+Informe: `aptc106_s9grupo2.docx`.
