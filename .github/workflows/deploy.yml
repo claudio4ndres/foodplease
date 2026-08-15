@@ -31,6 +31,13 @@ jobs:
     needs: pruebas
     runs-on: ubuntu-latest
     steps:
+      - name: Diagnostico OIDC (claims del token)
+        run: |
+          RESP=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+          CUERPO=$(echo "$RESP" | jq -r .value | cut -d. -f2 | tr '_-' '/+')
+          case $(( ${#CUERPO} % 4 )) in 2) CUERPO="$CUERPO==";; 3) CUERPO="$CUERPO=";; esac
+          echo "$CUERPO" | base64 -d | jq '{iss, aud, sub}'
+
       - name: Autenticarse en AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
