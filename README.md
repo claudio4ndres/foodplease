@@ -214,7 +214,7 @@ Si una regla del negocio se rompe (por ejemplo, precio $0), el **dominio** recha
 
 En la carpeta [`mockups/`](mockups/) están los diseños de la futura app móvil (pensada para desarrollarse en Flutter): las cuatro vistas principales con sus primeras interacciones de navegación, sin lógica todavía. Cada pantalla existe como HTML/CSS (el código fuente del diseño) y como imagen renderizada.
 
-**Prototipo navegable**: [claudio4ndres.github.io/foodplease/mockups/s1_menu.html](https://claudio4ndres.github.io/foodplease/mockups/s1_menu.html) — se puede recorrer el flujo completo haciendo clic (tarjetas, botones, volver), sin una línea de lógica: solo enlaces entre pantallas. También es accesible desde el botón "App móvil (prototipo)" de la web en producción.
+**Prototipo navegable**: [dkru8u5k5ghu5.cloudfront.net/static/mockups/s1_menu.html](https://dkru8u5k5ghu5.cloudfront.net/static/mockups/s1_menu.html) — se puede recorrer el flujo completo haciendo clic (tarjetas, botones, volver), sin una línea de lógica: solo enlaces entre pantallas. Vive en la misma URL del sitio en producción y es accesible desde el botón "App móvil (prototipo)" de la barra superior de la web.
 
 | Menú | Detalle | Formulario | Eliminar |
 |---|---|---|---|

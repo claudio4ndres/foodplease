@@ -129,6 +129,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# El prototipo navegable de la app movil se sirve como estaticos
+# en /static/mockups/ (misma URL del sitio, via WhiteNoise).
+STATICFILES_DIRS = [('mockups', BASE_DIR / 'mockups')]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
